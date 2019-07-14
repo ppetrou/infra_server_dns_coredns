@@ -1,0 +1,9 @@
+.:5300 {
+    file db.rhev.local rhev.local
+    file db.192.168    168.192.in-addr.arpa
+    log
+    forward . 8.8.8.8 {
+        except rhev.local
+    }
+}
+

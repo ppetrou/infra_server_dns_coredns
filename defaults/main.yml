@@ -1,0 +1,17 @@
+---
+# defaults file for home_server_dns_coredns
+
+home_server_dns_coredns_version: 1.5.2
+home_server_dns_coredns_port: 5300
+
+home_server_dns_coredns_server_name: fedoradev.local
+home_server_dns_coredns_admin_email: ppetrou.gmail.com
+
+home_server_dns_coredns_zones:
+  - name: rhev.local
+    a_records:
+      - name: hypervisor
+        ip: 192.168.1.100
+      - name: rhev
+        ip: 192.168.1.120
+        
