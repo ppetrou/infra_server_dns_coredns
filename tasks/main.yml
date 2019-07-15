@@ -1,2 +1,48 @@
 ---
-# tasks file for test
+# tasks file for home_server_dns_coredns
+
+# Download CoreDNS Binary
+- name: Download CoreDNS Precompiled Binary tarball
+  get_url:
+    url: "{{ home_server_dns_coredns_download_url }}"
+    dest: /tmp/{{ home_server_dns_coredns_binary }}
+
+# Unzip CoreDNS tarball
+- name: Unzip CoreDNS tarball
+  unarchive:
+    src: /tmp/{{ home_server_dns_coredns_binary }}
+    dest: /usr/bin
+    owner: root
+    group: root
+    remote_src: yes
+
+# Create /etc/coredns folder
+- name: Create /etc/coredns folder
+  file:
+    path: /etc/coredns
+    state: directory
+    owner: root
+    group: root
+
+# Create Corefile
+- name: Create Corefile
+  template:
+    src: Corefile.j2
+    dest: /etc/coredns/Corefile
+    owner: root
+    group: root
+
+# Create zone files
+- name: Create zone files
+  vars:
+    name: "{{ item.name }}"
+    reverse_zone: "{{ item.reverse_zone }}"
+    a_records: "{{ item.a_records }}" 
+  template: 
+    src: db.zone.j2
+    dest: /etc/coredns/db.{{ item.name }}
+    owner: root
+    group: root
+  with_items: "{{ home_server_dns_coredns_zones }}" 
+     
+  

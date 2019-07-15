@@ -1,9 +1,10 @@
-.:5300 {
-    file db.rhev.local rhev.local
-    file db.192.168    168.192.in-addr.arpa
+.:{{ home_server_dns_coredns_port }} {
+    {% for zone in home_server_dns_coredns_zones %}
+    file /etc/coredns/db.{{ zone.name }} {{ zone.name }}
+    file /etc/coredns/db.{{ zone.reverse_zone }} {{ zone.reverse_zone }}
+    {% endfor %}
     log
     forward . 8.8.8.8 {
-        except rhev.local
+        except {% for zone in home_server_dns_coredns_zones %}{{ zone.name }} {% endfor %}
     }
 }
-

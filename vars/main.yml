@@ -2,6 +2,6 @@
 # vars file for home_server_dns_coredns
 
 home_server_dns_coredns_binary: coredns_{{ home_server_dns_coredns_version }}_linux_amd64.tgz 
-home_server_dns_coredns_download_url: https://github.com/coredns/coredns/releases/download/{{ home_server_dns_coredns_version }}/{{ home_server_dns_coredns_binary }}
-
+home_server_dns_coredns_download_url: https://github.com/coredns/coredns/releases/download/v{{ home_server_dns_coredns_version }}/{{ home_server_dns_coredns_binary }}
+                                      
 home_server_dns_coredns_start_cmd: ./coredns 2>&1 > /tmp/coredns.log &
