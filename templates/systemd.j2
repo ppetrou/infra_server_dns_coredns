@@ -5,11 +5,11 @@ After=NetworkManager-wait-online.service
 
 [Service]
 Type=simple
-PIDFile={{ home_server_dns_coredns_pidfile }}
-ExecStart={{ home_server_dns_coredns_start_cmd }}
-ExecStop={{ home_server_dns_coredns_stop_cmd }}
-StandardOutput=append:{{ home_server_dns_coredns_logile }}
-StandardError=append:{{ home_server_dns_coredns_logile }}
+PIDFile={{ infra_server_dns_coredns_pidfile }}
+ExecStart={{ infra_server_dns_coredns_start_cmd }}
+ExecStop={{ infra_server_dns_coredns_stop_cmd }}
+StandardOutput=append:{{ infra_server_dns_coredns_logile }}
+StandardError=append:{{ infra_server_dns_coredns_logile }}
 
 [Install]
 WantedBy=multi-user.target

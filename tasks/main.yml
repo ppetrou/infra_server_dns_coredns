@@ -1,16 +1,16 @@
 ---
-# tasks file for home_server_dns_coredns
+# tasks file for infra_server_dns_coredns
 
 # Download CoreDNS Binary
 - name: Download CoreDNS Precompiled Binary tarball
   get_url:
-    url: "{{ home_server_dns_coredns_download_url }}"
-    dest: /tmp/{{ home_server_dns_coredns_binary }}
+    url: "{{ infra_server_dns_coredns_download_url }}"
+    dest: /tmp/{{ infra_server_dns_coredns_binary }}
 
 # Unzip CoreDNS tarball
 - name: Unzip CoreDNS tarball
   unarchive:
-    src: /tmp/{{ home_server_dns_coredns_binary }}
+    src: /tmp/{{ infra_server_dns_coredns_binary }}
     dest: /usr/bin
     owner: root
     group: root
@@ -43,7 +43,7 @@
     dest: /etc/coredns/db.{{ item.name }}
     owner: root
     group: root
-  with_items: "{{ home_server_dns_coredns_zones }}" 
+  with_items: "{{ infra_server_dns_coredns_zones }}" 
      
 # Create reverse zone files
 - name: Create reverse zone files
@@ -56,12 +56,12 @@
     dest: /etc/coredns/db.{{ item.reverse_zone }}
     owner: root
     group: root
-  with_items: "{{ home_server_dns_coredns_zones }}"   
+  with_items: "{{ infra_server_dns_coredns_zones }}"   
 
 # Create empty log file if it does not exist. Systemd StandardOutput fails if the file does not exist!!
 - name: Create empty log file if it does not exist. Systemd StandardOutput fails if the file does not exist!!
   file:
-    path: "{{ home_server_dns_coredns_logile }}"
+    path: "{{ infra_server_dns_coredns_logile }}"
     state: touch 
 
 # Get the CoreDNS PID if it runs

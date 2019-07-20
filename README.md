@@ -1,4 +1,4 @@
-home_server_dns_coredns
+infra_server_dns_coredns
 =========
 
 A simple role to install and configure coredns using a pre-compiled binary.
@@ -14,11 +14,11 @@ Role Variables
 ```
 Variable                                Level                 Description
 
-home_server_dns_coredns_version         Default               CoreDNS Version
-home_server_dns_coredns_port            Default               CoreDNS Port
-home_server_dns_coredns_server_name     Default               DNS Server Name
-home_server_dns_coredns_admin_email     Default               DNS Server Admin Email
-home_server_dns_coredns_zones           Default               DNS Zone (Forward and Reverse)
+infra_server_dns_coredns_version         Default               CoreDNS Version
+infra_server_dns_coredns_port            Default               CoreDNS Port
+infra_server_dns_coredns_server_name     Default               DNS Server Name
+infra_server_dns_coredns_admin_email     Default               DNS Server Admin Email
+infra_server_dns_coredns_zones           Default               DNS Zone (Forward and Reverse)
 ```
 
 Dependencies
@@ -31,16 +31,16 @@ Example Playbook
 
 ```
 ---
-- hosts: home_server
+- hosts: infra_server
   become: yes
   roles:
-    - role: home_server_dns_coredns
+    - role: infra_server_dns_coredns
       vars:
-        home_server_dns_coredns_version: 1.5.2
-        home_server_dns_coredns_port: 53
-        home_server_dns_coredns_server_name: devserver.local
-        home_server_dns_coredns_admin_email: admin.email.com
-        home_server_dns_coredns_zones:
+        infra_server_dns_coredns_version: 1.5.2
+        infra_server_dns_coredns_port: 53
+        infra_server_dns_coredns_server_name: devserver.local
+        infra_server_dns_coredns_admin_email: admin.email.com
+        infra_server_dns_coredns_zones:
           - name: example.local
             reverse_zone: 168.192.in-addr.arpa
             a_records:

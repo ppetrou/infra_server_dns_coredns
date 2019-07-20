@@ -1,10 +1,10 @@
-.:{{ home_server_dns_coredns_port }} {
-    {% for zone in home_server_dns_coredns_zones %}
+.:{{ infra_server_dns_coredns_port }} {
+    {% for zone in infra_server_dns_coredns_zones %}
     file /etc/coredns/db.{{ zone.name }} {{ zone.name }}
     file /etc/coredns/db.{{ zone.reverse_zone }} {{ zone.reverse_zone }}
     {% endfor %}
     log
     forward . 8.8.8.8 {
-        except {% for zone in home_server_dns_coredns_zones %}{{ zone.name }} {% endfor %}
+        except {% for zone in infra_server_dns_coredns_zones %}{{ zone.name }} {% endfor %}
     }
 }

@@ -1,13 +1,13 @@
 ---
-# defaults file for home_server_dns_coredns
+# defaults file for infra_server_dns_coredns
 
-home_server_dns_coredns_version: 1.5.2
-home_server_dns_coredns_port: 53
+infra_server_dns_coredns_version: 1.5.2
+infra_server_dns_coredns_port: 53
 
-home_server_dns_coredns_server_name: devserver.local
-home_server_dns_coredns_admin_email: admin.email.com
+infra_server_dns_coredns_server_name: devserver.local
+infra_server_dns_coredns_admin_email: admin.email.com
 
-home_server_dns_coredns_zones:
+infra_server_dns_coredns_zones:
   - name: example.local
     reverse_zone: 168.192.in-addr.arpa
     a_records:
