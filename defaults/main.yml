@@ -4,15 +4,14 @@
 home_server_dns_coredns_version: 1.5.2
 home_server_dns_coredns_port: 53
 
-home_server_dns_coredns_server_name: fedoradev.local
-home_server_dns_coredns_admin_email: ppetrou.gmail.com
+home_server_dns_coredns_server_name: devserver.local
+home_server_dns_coredns_admin_email: admin.email.com
 
 home_server_dns_coredns_zones:
-  - name: rhev.local
+  - name: example.local
     reverse_zone: 168.192.in-addr.arpa
     a_records:
-      - name: hypervisor
+      - name: subdomain1
         ip: 192.168.1.100
-      - name: rhev
+      - name: subdomain2
         ip: 192.168.1.120
-        

@@ -45,4 +45,58 @@
     group: root
   with_items: "{{ home_server_dns_coredns_zones }}" 
      
-  
+# Create reverse zone files
+- name: Create reverse zone files
+  vars:
+    name: "{{ item.name }}"
+    reverse_zone: "{{ item.reverse_zone }}"
+    a_records: "{{ item.a_records }}" 
+  template: 
+    src: db.reverse.j2
+    dest: /etc/coredns/db.{{ item.reverse_zone }}
+    owner: root
+    group: root
+  with_items: "{{ home_server_dns_coredns_zones }}"   
+
+# Create empty log file if it does not exist. Systemd StandardOutput fails if the file does not exist!!
+- name: Create empty log file if it does not exist. Systemd StandardOutput fails if the file does not exist!!
+  file:
+    path: "{{ home_server_dns_coredns_logile }}"
+    state: touch 
+
+# Get the CoreDNS PID if it runs
+- name: Get the CoreDNS PID if it runs
+  shell: pgrep coredns
+  register: reg_pid_coredns
+  ignore_errors: True
+
+# Kill CoreDNS if it runs. Not sure if it support config reload at this point.
+- name: Kill CoreDNS if it running 
+  shell: kill {{ reg_pid_coredns.stdout }}
+  when: reg_pid_coredns.rc == 0
+
+# Create the systemd unit
+- name: Create the systemd unit
+  template:
+    src: systemd.j2
+    dest: /usr/lib/systemd/system/corednsd.service
+    owner: root
+    group: root
+
+# Daemon Reload
+- name: Daemon Reload
+  systemd:
+    daemon_reload: yes
+
+# Enable CoreDNS Service
+- name: Enable CoreDNS Service
+  systemd:
+    name: corednsd
+    enabled: true
+    masked: no
+
+# Start CoreDNS Service
+- name: Start CoreDNS Service
+  systemd:
+    name: corednsd
+    state: started

@@ -1,7 +1,6 @@
 $TTL 1h                 ; default expiration time of all resource records without their own TTL value
-rhev.local.   IN  SOA   fedoradev.local. ppetrou.gmail.com. ( 2007120710 1d 2h 4w 1h )
+{{ name }}.   IN  SOA   {{ home_server_dns_coredns_server_name }}. {{ home_server_dns_coredns_admin_email }}. ( 2007120710 1d 2h 4w 1h )
 
-100.1         IN  PTR   hypervisor.rhev.local.
-120.1         IN  PTR   rhev-engine.rhev.local.
-
-
+{% for a_record in a_records %}
+{{ a_record.ip.split('.')[3] }}.{{ a_record.ip.split('.')[2] }} IN PTR {{ a_record.name }}.{{ name }}.
+{% endfor %}

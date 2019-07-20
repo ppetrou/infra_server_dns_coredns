@@ -3,5 +3,12 @@
 
 home_server_dns_coredns_binary: coredns_{{ home_server_dns_coredns_version }}_linux_amd64.tgz 
 home_server_dns_coredns_download_url: https://github.com/coredns/coredns/releases/download/v{{ home_server_dns_coredns_version }}/{{ home_server_dns_coredns_binary }}
-                                      
-home_server_dns_coredns_start_cmd: ./coredns 2>&1 > /tmp/coredns.log &
+
+home_server_dns_coredns_pidfile: /var/run/corednsd.pid
+home_server_dns_coredns_logile: /var/log/corednsd.log
+home_server_dns_coredns_corefile: /etc/coredns/Corefile
+
+home_server_dns_coredns_start_cmd: /usr/bin/coredns -conf {{ home_server_dns_coredns_corefile }} -pidfile {{ home_server_dns_coredns_pidfile }}
+home_server_dns_coredns_stop_cmd: kill $MAINPID
+
+
