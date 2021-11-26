@@ -1,14 +1,13 @@
 ---
 # vars file for infra_server_dns_coredns
 
-infra_server_dns_coredns_binary: coredns_{{ infra_server_dns_coredns_version }}_linux_amd64.tgz 
+infra_server_dns_coredns_binary: coredns_{{ infra_server_dns_coredns_version }}_linux_amd64.tgz
 infra_server_dns_coredns_download_url: https://github.com/coredns/coredns/releases/download/v{{ infra_server_dns_coredns_version }}/{{ infra_server_dns_coredns_binary }}
+infra_server_dns_coredns_binary_download_validate_certs: yes
 
 infra_server_dns_coredns_pidfile: /var/run/corednsd.pid
 infra_server_dns_coredns_logile: /var/log/corednsd.log
 infra_server_dns_coredns_corefile: /etc/coredns/Corefile
 
 infra_server_dns_coredns_start_cmd: /usr/bin/coredns -conf {{ infra_server_dns_coredns_corefile }} -pidfile {{ infra_server_dns_coredns_pidfile }}
-infra_server_dns_coredns_stop_cmd: kill $MAINPID
-
-
+infra_server_dns_coredns_stop_cmd: /usr/bin/kill $MAINPID
