@@ -27,6 +27,9 @@
 
 # Create Corefile
 - name: Create Corefile
+  vars:
+    zones: "{{ infra_server_dns_coredns_zones | map(attribute='name') | list | unique }}"
+    reverse_zones: "{{ infra_server_dns_coredns_zones | map(attribute='reverse_zone') | list | unique }}"
   template:
     src: Corefile.j2
     dest: /etc/coredns/Corefile
@@ -45,7 +48,7 @@
     owner: root
     group: root
   with_items: "{{ infra_server_dns_coredns_zones }}" 
-     
+
 # Create reverse zone files
 - name: Create reverse zone files
   vars:
@@ -54,10 +57,20 @@
     a_records: "{{ item.a_records }}" 
   template: 
     src: db.reverse.j2
-    dest: /etc/coredns/db.{{ item.reverse_zone }}
+    dest: /etc/coredns/db.{{ item.name }}.rev
     owner: root
     group: root
-  with_items: "{{ infra_server_dns_coredns_zones }}"   
+  with_items: "{{ infra_server_dns_coredns_zones }}"
+
+# Create the root reverse zone file
+- name: Create the root reverse zone file
+  vars:
+    zones: "{{ infra_server_dns_coredns_zones }}"
+  template: 
+    src: db.reverse.root.j2
+    dest: /etc/coredns/db.root.rev
+    owner: root
+    group: root
 
 # Create empty log file if it does not exist. Systemd StandardOutput fails if the file does not exist!!
 - name: Create empty log file if it does not exist. Systemd StandardOutput fails if the file does not exist!!
@@ -101,3 +114,34 @@
   systemd:
     name: corednsd
     state: started
+
+# Assert the DNS Entries - Forward Lookup
+- name: Assert the DNS Entries - Forward Lookup
+  vars:
+    lookup_host: "{{ item.1.name}}.{{ item.0.name }}"
+    lookup_ip: "{{ item.1.ip }}"
+  assert:
+    quiet: yes
+    success_msg: "DNS Query for {{ lookup_host }} - OK"
+    fail_msg: "DNS Query for {{ lookup_host }} - FAILED"
+    that:
+      - "{{ lookup('dig', lookup_host, infra_server_dns_coredns_ip_at_prefixed) == lookup_ip }}"
+  loop: "{{ infra_server_dns_coredns_zones|subelements('a_records') }}"
+  loop_control:
+    label: "{{ lookup_host }} -> {{ lookup_ip }}"
+
+# Assert the DNS Entries - Reverse Lookup
+- name: Assert the DNS Entries - Reverse Lookup
+  vars:
+    lookup_host: "{{ item.1.name}}.{{ item.0.name }}."
+    lookup_ip: "{{ item.1.ip }}/PTR"
+  assert:
+    quiet: yes
+    success_msg: "DNS Query for {{ lookup_ip }} - OK"
+    fail_msg: "DNS Query for {{ lookup_ip }} - FAILED"
+    that:
+      - "{{ lookup('dig', lookup_ip, infra_server_dns_coredns_ip_at_prefixed) == lookup_host }}"
+  loop: "{{ infra_server_dns_coredns_zones|subelements('a_records') }}"
+  loop_control:
+    label: "{{ lookup_ip }} -> {{ lookup_host }}"
+

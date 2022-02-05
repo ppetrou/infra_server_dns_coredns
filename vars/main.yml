@@ -11,3 +11,7 @@ infra_server_dns_coredns_corefile: /etc/coredns/Corefile
 
 infra_server_dns_coredns_start_cmd: /usr/bin/coredns -conf {{ infra_server_dns_coredns_corefile }} -pidfile {{ infra_server_dns_coredns_pidfile }}
 infra_server_dns_coredns_stop_cmd: /usr/bin/kill $MAINPID
+
+infra_server_dns_coredns_forwarder: 8.8.8.8 
+
+infra_server_dns_coredns_ip_at_prefixed: "@{{ infra_server_dns_coredns_ip }}"
