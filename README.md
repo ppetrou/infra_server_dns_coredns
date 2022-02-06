@@ -13,7 +13,7 @@ Role Variables
 --------------
 
 ```
-Variable                                Level                 Description
+Variable                                 Level                 Description
 
 infra_server_dns_coredns_version         Default               CoreDNS Version
 infra_server_dns_coredns_port            Default               CoreDNS Port
@@ -21,6 +21,7 @@ infra_server_dns_coredns_server_name     Default               DNS Server Name
 infra_server_dns_coredns_admin_email     Default               DNS Server Admin Email
 infra_server_dns_coredns_zones           Default               DNS Zone (Forward and Reverse)
 infra_server_dns_coredns_ip              Default               CoreDNS Listen IP
+infra_server_dns_coredns_run_assertions  Default               Flag whether to run dig assertions
 ```
 
 Dependencies
