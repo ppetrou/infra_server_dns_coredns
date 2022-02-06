@@ -16,4 +16,5 @@ infra_server_dns_coredns_zones:
       - name: subdomain2
         ip: 192.168.1.120
 
-infra_server_dns_coredns_ip: 192.168.122.100
+infra_server_dns_coredns_ip: "{{ ansible_ssh_host }}"
+infra_server_dns_coredns_run_assertions: no

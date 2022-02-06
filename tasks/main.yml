@@ -115,6 +115,24 @@
     name: corednsd
     state: started
 
+# Check firewalld state
+- name: Check firewalld state
+  systemd:
+    name: firewalld
+  register: r_firewalld_state
+
+# Setup firewalld
+- name: Setup firewalld
+  ansible.posix.firewalld:
+    port: "{{ item }}"
+    permanent: yes
+    immediate: yes
+    state: enabled
+  loop:
+    - 53/tcp
+    - 53/udp
+  when: r_firewalld_state.status.ActiveState == "active"
+
 # Assert the DNS Entries - Forward Lookup
 - name: Assert the DNS Entries - Forward Lookup
   vars:
@@ -129,6 +147,8 @@
   loop: "{{ infra_server_dns_coredns_zones|subelements('a_records') }}"
   loop_control:
     label: "{{ lookup_host }} -> {{ lookup_ip }}"
+  when:
+    - infra_server_dns_coredns_run_assertions == true
 
 # Assert the DNS Entries - Reverse Lookup
 - name: Assert the DNS Entries - Reverse Lookup
@@ -144,4 +164,6 @@
   loop: "{{ infra_server_dns_coredns_zones|subelements('a_records') }}"
   loop_control:
     label: "{{ lookup_ip }} -> {{ lookup_host }}"
+  when:
+    - infra_server_dns_coredns_run_assertions == true
 
