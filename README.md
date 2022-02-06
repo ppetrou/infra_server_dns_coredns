@@ -44,6 +44,7 @@ Example Playbook
         infra_server_dns_coredns_server_name: devserver.local
         infra_server_dns_coredns_admin_email: admin.email.com
         infra_server_dns_coredns_ip: 192.168.122.55
+        infra_server_dns_coredns_run_assertions: yes
         infra_server_dns_coredns_zones:
           - name: example.local
             reverse_zone: 168.192.in-addr.arpa
